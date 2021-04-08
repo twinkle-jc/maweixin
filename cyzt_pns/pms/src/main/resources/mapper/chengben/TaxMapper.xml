@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pms.chengben.mapper.TaxMapper">
+    
+    <resultMap type="Tax" id="TaxResult">
+        <result property="chengbenShuiId"    column="chengben_shui_id"    />
+        <result property="chengbenShuiJine"    column="chengben_shui_jinE"    />
+        <result property="chengbenShuiType"    column="chengben_shui_type"    />
+        <result property="chengbenShuiRiqi"    column="chengben_shui_riQi"    />
+        <result property="chengbenShuiNote"    column="chengben_shui_note"    />
+        <result property="createuser"    column="createuser"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="modifyuser"    column="modifyuser"    />
+        <result property="modifytime"    column="modifytime"    />
+        <result property="isDel"    column="isDel"    />
+    </resultMap>
+
+    <sql id="selectTaxVo">
+        select chengben_shui_id, chengben_shui_jinE, chengben_shui_type, chengben_shui_riQi, chengben_shui_note, createuser, createtime, modifyuser, modifytime, isDel from pms_chengben_shui
+    </sql>
+
+    <select id="selectTaxList" parameterType="Tax" resultMap="TaxResult">
+        <include refid="selectTaxVo"/>
+        <where>  
+            <if test="chengbenShuiJine != null "> and chengben_shui_jinE = #{chengbenShuiJine}</if>
+            <if test="chengbenShuiType != null  and chengbenShuiType != ''"> and chengben_shui_type = #{chengbenShuiType}</if>
+            <if test="chengbenShuiRiqi != null "> and chengben_shui_riQi = #{chengbenShuiRiqi}</if>
+            <if test="chengbenShuiNote != null  and chengbenShuiNote != ''"> and chengben_shui_note = #{chengbenShuiNote}</if>
+            <if test="createuser != null "> and createuser = #{createuser}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="modifyuser != null "> and modifyuser = #{modifyuser}</if>
+            <if test="modifytime != null "> and modifytime = #{modifytime}</if>
+            <if test="isDel != null "> and isDel = #{isDel}</if>
+        </where>
+    </select>
+    
+    <select id="selectTaxById" parameterType="String" resultMap="TaxResult">
+        <include refid="selectTaxVo"/>
+        where chengben_shui_id = #{chengbenShuiId}
+    </select>
+        
+    <insert id="insertTax" parameterType="Tax">
+        insert into pms_chengben_shui
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="chengbenShuiId != null">chengben_shui_id,</if>
+            <if test="chengbenShuiJine != null">chengben_shui_jinE,</if>
+            <if test="chengbenShuiType != null">chengben_shui_type,</if>
+            <if test="chengbenShuiRiqi != null">chengben_shui_riQi,</if>
+            <if test="chengbenShuiNote != null">chengben_shui_note,</if>
+            <if test="createuser != null">createuser,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="modifyuser != null">modifyuser,</if>
+            <if test="modifytime != null">modifytime,</if>
+            <if test="isDel != null">isDel,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="chengbenShuiId != null">#{chengbenShuiId},</if>
+            <if test="chengbenShuiJine != null">#{chengbenShuiJine},</if>
+            <if test="chengbenShuiType != null">#{chengbenShuiType},</if>
+            <if test="chengbenShuiRiqi != null">#{chengbenShuiRiqi},</if>
+            <if test="chengbenShuiNote != null">#{chengbenShuiNote},</if>
+            <if test="createuser != null">#{createuser},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifyuser != null">#{modifyuser},</if>
+            <if test="modifytime != null">#{modifytime},</if>
+            <if test="isDel != null">#{isDel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTax" parameterType="Tax">
+        update pms_chengben_shui
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="chengbenShuiJine != null">chengben_shui_jinE = #{chengbenShuiJine},</if>
+            <if test="chengbenShuiType != null">chengben_shui_type = #{chengbenShuiType},</if>
+            <if test="chengbenShuiRiqi != null">chengben_shui_riQi = #{chengbenShuiRiqi},</if>
+            <if test="chengbenShuiNote != null">chengben_shui_note = #{chengbenShuiNote},</if>
+            <if test="createuser != null">createuser = #{createuser},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="modifyuser != null">modifyuser = #{modifyuser},</if>
+            <if test="modifytime != null">modifytime = #{modifytime},</if>
+            <if test="isDel != null">isDel = #{isDel},</if>
+        </trim>
+        where chengben_shui_id = #{chengbenShuiId}
+    </update>
+
+    <delete id="deleteTaxById" parameterType="String">
+        delete from pms_chengben_shui where chengben_shui_id = #{chengbenShuiId}
+    </delete>
+
+    <delete id="deleteTaxByIds" parameterType="String">
+        delete from pms_chengben_shui where chengben_shui_id in 
+        <foreach item="chengbenShuiId" collection="array" open="(" separator="," close=")">
+            #{chengbenShuiId}
+        </foreach>
+    </delete>
+
+</mapper>

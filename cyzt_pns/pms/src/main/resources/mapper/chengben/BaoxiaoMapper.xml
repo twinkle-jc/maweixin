@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pms.chengben.mapper.BaoxiaoMapper">
+    
+    <resultMap type="Baoxiao" id="BaoxiaoResult">
+        <result property="chengbenBaoxiaoId"    column="chengben_baoxiao_id"    />
+        <result property="chengbenBaoxiaoType"    column="chengben_baoxiao_type"    />
+        <result property="chengbenBaoxiaoMingxi"    column="chengben_baoxiao_mingxi"    />
+        <result property="chengbenBaoxiaoJine"    column="chengben_baoxiao_jinE"    />
+        <result property="chengbenBaoxiaoKaipiaoriqi"    column="chengben_baoxiao_kaiPiaoRiQi"    />
+        <result property="chengbenBaoxiaoIszhuanpiao"    column="chengben_baoxiao_isZhuanPiao"    />
+        <result property="chengbenBaoxiaoFapiaohaoma"    column="chengben_baoxiao_faPiaoHaoMa"    />
+        <result property="chengbenBaoxiaoXiaofangmingcheng"    column="chengben_baoxiao_xiaoFangMingCheng"    />
+        <result property="chengbenBaoxiaoDikoushui"    column="chengben_baoxiao_diKouShui"    />
+        <result property="chengbenBaoxiaoIsyibaoxiao"    column="chengben_baoxiao_isYiBaoXiao"    />
+        <result property="chengbenBaoxiaoBeizhu"    column="chengben_baoxiao_beizhu"    />
+        <result property="chengbenBaoxiaoBaoxiaoren"    column="chengben_baoxiao_baoxiaoren"    />
+        <result property="createuser"    column="createuser"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="modifyuser"    column="modifyuser"    />
+        <result property="modifytime"    column="modifytime"    />
+        <result property="isDel"    column="isDel"    />
+    </resultMap>
+
+    <sql id="selectBaoxiaoVo">
+        select chengben_baoxiao_id, chengben_baoxiao_type, chengben_baoxiao_mingxi, chengben_baoxiao_jinE, chengben_baoxiao_kaiPiaoRiQi, chengben_baoxiao_isZhuanPiao, chengben_baoxiao_faPiaoHaoMa, chengben_baoxiao_xiaoFangMingCheng, chengben_baoxiao_diKouShui, chengben_baoxiao_isYiBaoXiao, chengben_baoxiao_beizhu, chengben_baoxiao_baoxiaoren, createuser, createtime, modifyuser, modifytime, isDel from pms_chengben_baoxiao
+    </sql>
+
+    <select id="selectBaoxiaoList" parameterType="Baoxiao" resultMap="BaoxiaoResult">
+        <include refid="selectBaoxiaoVo"/>
+        <where>  
+            <if test="chengbenBaoxiaoType != null  and chengbenBaoxiaoType != ''"> and chengben_baoxiao_type = #{chengbenBaoxiaoType}</if>
+            <if test="chengbenBaoxiaoMingxi != null  and chengbenBaoxiaoMingxi != ''"> and chengben_baoxiao_mingxi like concat('%', #{chengbenBaoxiaoMingxi}, '%')</if>
+            <if test="chengbenBaoxiaoJine != null "> and chengben_baoxiao_jinE = #{chengbenBaoxiaoJine}</if>
+            <if test="chengbenBaoxiaoKaipiaoriqi != null "> and chengben_baoxiao_kaiPiaoRiQi = #{chengbenBaoxiaoKaipiaoriqi}</if>
+            <if test="chengbenBaoxiaoIszhuanpiao != null "> and chengben_baoxiao_isZhuanPiao = #{chengbenBaoxiaoIszhuanpiao}</if>
+            <if test="chengbenBaoxiaoFapiaohaoma != null  and chengbenBaoxiaoFapiaohaoma != ''"> and chengben_baoxiao_faPiaoHaoMa = #{chengbenBaoxiaoFapiaohaoma}</if>
+            <if test="chengbenBaoxiaoXiaofangmingcheng != null  and chengbenBaoxiaoXiaofangmingcheng != ''"> and chengben_baoxiao_xiaoFangMingCheng = #{chengbenBaoxiaoXiaofangmingcheng}</if>
+            <if test="chengbenBaoxiaoDikoushui != null "> and chengben_baoxiao_diKouShui = #{chengbenBaoxiaoDikoushui}</if>
+            <if test="chengbenBaoxiaoIsyibaoxiao != null "> and chengben_baoxiao_isYiBaoXiao = #{chengbenBaoxiaoIsyibaoxiao}</if>
+            <if test="chengbenBaoxiaoBeizhu != null  and chengbenBaoxiaoBeizhu != ''"> and chengben_baoxiao_beizhu = #{chengbenBaoxiaoBeizhu}</if>
+            <if test="chengbenBaoxiaoBaoxiaoren != null "> and chengben_baoxiao_baoxiaoren = #{chengbenBaoxiaoBaoxiaoren}</if>
+            <if test="createuser != null "> and createuser = #{createuser}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="modifyuser != null "> and modifyuser = #{modifyuser}</if>
+            <if test="modifytime != null "> and modifytime = #{modifytime}</if>
+            <if test="isDel != null "> and isDel = #{isDel}</if>
+        </where>
+    </select>
+    
+    <select id="selectBaoxiaoById" parameterType="String" resultMap="BaoxiaoResult">
+        <include refid="selectBaoxiaoVo"/>
+        where chengben_baoxiao_id = #{chengbenBaoxiaoId}
+    </select>
+        
+    <insert id="insertBaoxiao" parameterType="Baoxiao">
+        insert into pms_chengben_baoxiao
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="chengbenBaoxiaoId != null">chengben_baoxiao_id,</if>
+            <if test="chengbenBaoxiaoType != null and chengbenBaoxiaoType != ''">chengben_baoxiao_type,</if>
+            <if test="chengbenBaoxiaoMingxi != null">chengben_baoxiao_mingxi,</if>
+            <if test="chengbenBaoxiaoJine != null">chengben_baoxiao_jinE,</if>
+            <if test="chengbenBaoxiaoKaipiaoriqi != null">chengben_baoxiao_kaiPiaoRiQi,</if>
+            <if test="chengbenBaoxiaoIszhuanpiao != null">chengben_baoxiao_isZhuanPiao,</if>
+            <if test="chengbenBaoxiaoFapiaohaoma != null">chengben_baoxiao_faPiaoHaoMa,</if>
+            <if test="chengbenBaoxiaoXiaofangmingcheng != null">chengben_baoxiao_xiaoFangMingCheng,</if>
+            <if test="chengbenBaoxiaoDikoushui != null">chengben_baoxiao_diKouShui,</if>
+            <if test="chengbenBaoxiaoIsyibaoxiao != null">chengben_baoxiao_isYiBaoXiao,</if>
+            <if test="chengbenBaoxiaoBeizhu != null">chengben_baoxiao_beizhu,</if>
+            <if test="chengbenBaoxiaoBaoxiaoren != null">chengben_baoxiao_baoxiaoren,</if>
+            <if test="createuser != null">createuser,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="modifyuser != null">modifyuser,</if>
+            <if test="modifytime != null">modifytime,</if>
+            <if test="isDel != null">isDel,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="chengbenBaoxiaoId != null">#{chengbenBaoxiaoId},</if>
+            <if test="chengbenBaoxiaoType != null and chengbenBaoxiaoType != ''">#{chengbenBaoxiaoType},</if>
+            <if test="chengbenBaoxiaoMingxi != null">#{chengbenBaoxiaoMingxi},</if>
+            <if test="chengbenBaoxiaoJine != null">#{chengbenBaoxiaoJine},</if>
+            <if test="chengbenBaoxiaoKaipiaoriqi != null">#{chengbenBaoxiaoKaipiaoriqi},</if>
+            <if test="chengbenBaoxiaoIszhuanpiao != null">#{chengbenBaoxiaoIszhuanpiao},</if>
+            <if test="chengbenBaoxiaoFapiaohaoma != null">#{chengbenBaoxiaoFapiaohaoma},</if>
+            <if test="chengbenBaoxiaoXiaofangmingcheng != null">#{chengbenBaoxiaoXiaofangmingcheng},</if>
+            <if test="chengbenBaoxiaoDikoushui != null">#{chengbenBaoxiaoDikoushui},</if>
+            <if test="chengbenBaoxiaoIsyibaoxiao != null">#{chengbenBaoxiaoIsyibaoxiao},</if>
+            <if test="chengbenBaoxiaoBeizhu != null">#{chengbenBaoxiaoBeizhu},</if>
+            <if test="chengbenBaoxiaoBaoxiaoren != null">#{chengbenBaoxiaoBaoxiaoren},</if>
+            <if test="createuser != null">#{createuser},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifyuser != null">#{modifyuser},</if>
+            <if test="modifytime != null">#{modifytime},</if>
+            <if test="isDel != null">#{isDel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaoxiao" parameterType="Baoxiao">
+        update pms_chengben_baoxiao
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="chengbenBaoxiaoType != null and chengbenBaoxiaoType != ''">chengben_baoxiao_type = #{chengbenBaoxiaoType},</if>
+            <if test="chengbenBaoxiaoMingxi != null">chengben_baoxiao_mingxi = #{chengbenBaoxiaoMingxi},</if>
+            <if test="chengbenBaoxiaoJine != null">chengben_baoxiao_jinE = #{chengbenBaoxiaoJine},</if>
+            <if test="chengbenBaoxiaoKaipiaoriqi != null">chengben_baoxiao_kaiPiaoRiQi = #{chengbenBaoxiaoKaipiaoriqi},</if>
+            <if test="chengbenBaoxiaoIszhuanpiao != null">chengben_baoxiao_isZhuanPiao = #{chengbenBaoxiaoIszhuanpiao},</if>
+            <if test="chengbenBaoxiaoFapiaohaoma != null">chengben_baoxiao_faPiaoHaoMa = #{chengbenBaoxiaoFapiaohaoma},</if>
+            <if test="chengbenBaoxiaoXiaofangmingcheng != null">chengben_baoxiao_xiaoFangMingCheng = #{chengbenBaoxiaoXiaofangmingcheng},</if>
+            <if test="chengbenBaoxiaoDikoushui != null">chengben_baoxiao_diKouShui = #{chengbenBaoxiaoDikoushui},</if>
+            <if test="chengbenBaoxiaoIsyibaoxiao != null">chengben_baoxiao_isYiBaoXiao = #{chengbenBaoxiaoIsyibaoxiao},</if>
+            <if test="chengbenBaoxiaoBeizhu != null">chengben_baoxiao_beizhu = #{chengbenBaoxiaoBeizhu},</if>
+            <if test="chengbenBaoxiaoBaoxiaoren != null">chengben_baoxiao_baoxiaoren = #{chengbenBaoxiaoBaoxiaoren},</if>
+            <if test="createuser != null">createuser = #{createuser},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="modifyuser != null">modifyuser = #{modifyuser},</if>
+            <if test="modifytime != null">modifytime = #{modifytime},</if>
+            <if test="isDel != null">isDel = #{isDel},</if>
+        </trim>
+        where chengben_baoxiao_id = #{chengbenBaoxiaoId}
+    </update>
+
+    <delete id="deleteBaoxiaoById" parameterType="String">
+        delete from pms_chengben_baoxiao where chengben_baoxiao_id = #{chengbenBaoxiaoId}
+    </delete>
+
+    <delete id="deleteBaoxiaoByIds" parameterType="String">
+        delete from pms_chengben_baoxiao where chengben_baoxiao_id in 
+        <foreach item="chengbenBaoxiaoId" collection="array" open="(" separator="," close=")">
+            #{chengbenBaoxiaoId}
+        </foreach>
+    </delete>
+
+</mapper>

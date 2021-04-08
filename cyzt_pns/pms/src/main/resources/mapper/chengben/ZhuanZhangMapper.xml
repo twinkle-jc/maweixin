@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pms.chengben.mapper.ZhuanZhangMapper">
+    
+    <resultMap type="ZhuanZhang" id="ZhuanZhangResult">
+        <result property="chengbenZhuanzhangId"    column="chengben_zhuanzhang_id"    />
+        <result property="chengbenZhuanzhangType"    column="chengben_zhuanzhang_type"    />
+        <result property="chengbenZhuanzhangJine"    column="chengben_zhuanzhang_jinE"    />
+        <result property="chengbenZhuanzhangName"    column="chengben_zhuanzhang_name"    />
+        <result property="chengbenZhuanzhangIsshoudaozhuanpiao"    column="chengben_zhuanzhang_isShouDaoZhuanPiao"    />
+        <result property="chengbenZhuanzhangIsyizhuanzhang"    column="chengben_zhuanzhang_isYiZhuanZhang"    />
+        <result property="chengbenZhuanzhangRiqi"    column="chengben_zhuanzhang_riQi"    />
+        <result property="chengbenZhuanzhangNote"    column="chengben_zhuanzhang_note"    />
+        <result property="createuser"    column="createuser"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="modifyuser"    column="modifyuser"    />
+        <result property="modifytime"    column="modifytime"    />
+        <result property="isDel"    column="isDel"    />
+    </resultMap>
+
+    <sql id="selectZhuanZhangVo">
+        select chengben_zhuanzhang_id, chengben_zhuanzhang_type, chengben_zhuanzhang_jinE, chengben_zhuanzhang_name, chengben_zhuanzhang_isShouDaoZhuanPiao, chengben_zhuanzhang_isYiZhuanZhang, chengben_zhuanzhang_riQi, chengben_zhuanzhang_note, createuser, createtime, modifyuser, modifytime, isDel from pms_chengben_zhuanzhang
+    </sql>
+
+    <select id="selectZhuanZhangList" parameterType="ZhuanZhang" resultMap="ZhuanZhangResult">
+        <include refid="selectZhuanZhangVo"/>
+        <where>  
+            <if test="chengbenZhuanzhangType != null  and chengbenZhuanzhangType != ''"> and chengben_zhuanzhang_type = #{chengbenZhuanzhangType}</if>
+            <if test="chengbenZhuanzhangJine != null "> and chengben_zhuanzhang_jinE = #{chengbenZhuanzhangJine}</if>
+            <if test="chengbenZhuanzhangName != null  and chengbenZhuanzhangName != ''"> and chengben_zhuanzhang_name like concat('%', #{chengbenZhuanzhangName}, '%')</if>
+            <if test="chengbenZhuanzhangIsshoudaozhuanpiao != null "> and chengben_zhuanzhang_isShouDaoZhuanPiao = #{chengbenZhuanzhangIsshoudaozhuanpiao}</if>
+            <if test="chengbenZhuanzhangIsyizhuanzhang != null "> and chengben_zhuanzhang_isYiZhuanZhang = #{chengbenZhuanzhangIsyizhuanzhang}</if>
+            <if test="chengbenZhuanzhangRiqi != null "> and chengben_zhuanzhang_riQi = #{chengbenZhuanzhangRiqi}</if>
+            <if test="chengbenZhuanzhangNote != null  and chengbenZhuanzhangNote != ''"> and chengben_zhuanzhang_note = #{chengbenZhuanzhangNote}</if>
+            <if test="createuser != null "> and createuser = #{createuser}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="modifyuser != null "> and modifyuser = #{modifyuser}</if>
+            <if test="modifytime != null "> and modifytime = #{modifytime}</if>
+            <if test="isDel != null "> and isDel = #{isDel}</if>
+        </where>
+    </select>
+    
+    <select id="selectZhuanZhangById" parameterType="String" resultMap="ZhuanZhangResult">
+        <include refid="selectZhuanZhangVo"/>
+        where chengben_zhuanzhang_id = #{chengbenZhuanzhangId}
+    </select>
+        
+    <insert id="insertZhuanZhang" parameterType="ZhuanZhang">
+        insert into pms_chengben_zhuanzhang
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="chengbenZhuanzhangId != null">chengben_zhuanzhang_id,</if>
+            <if test="chengbenZhuanzhangType != null">chengben_zhuanzhang_type,</if>
+            <if test="chengbenZhuanzhangJine != null">chengben_zhuanzhang_jinE,</if>
+            <if test="chengbenZhuanzhangName != null">chengben_zhuanzhang_name,</if>
+            <if test="chengbenZhuanzhangIsshoudaozhuanpiao != null">chengben_zhuanzhang_isShouDaoZhuanPiao,</if>
+            <if test="chengbenZhuanzhangIsyizhuanzhang != null">chengben_zhuanzhang_isYiZhuanZhang,</if>
+            <if test="chengbenZhuanzhangRiqi != null">chengben_zhuanzhang_riQi,</if>
+            <if test="chengbenZhuanzhangNote != null">chengben_zhuanzhang_note,</if>
+            <if test="createuser != null">createuser,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="modifyuser != null">modifyuser,</if>
+            <if test="modifytime != null">modifytime,</if>
+            <if test="isDel != null">isDel,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="chengbenZhuanzhangId != null">#{chengbenZhuanzhangId},</if>
+            <if test="chengbenZhuanzhangType != null">#{chengbenZhuanzhangType},</if>
+            <if test="chengbenZhuanzhangJine != null">#{chengbenZhuanzhangJine},</if>
+            <if test="chengbenZhuanzhangName != null">#{chengbenZhuanzhangName},</if>
+            <if test="chengbenZhuanzhangIsshoudaozhuanpiao != null">#{chengbenZhuanzhangIsshoudaozhuanpiao},</if>
+            <if test="chengbenZhuanzhangIsyizhuanzhang != null">#{chengbenZhuanzhangIsyizhuanzhang},</if>
+            <if test="chengbenZhuanzhangRiqi != null">#{chengbenZhuanzhangRiqi},</if>
+            <if test="chengbenZhuanzhangNote != null">#{chengbenZhuanzhangNote},</if>
+            <if test="createuser != null">#{createuser},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifyuser != null">#{modifyuser},</if>
+            <if test="modifytime != null">#{modifytime},</if>
+            <if test="isDel != null">#{isDel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateZhuanZhang" parameterType="ZhuanZhang">
+        update pms_chengben_zhuanzhang
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="chengbenZhuanzhangType != null">chengben_zhuanzhang_type = #{chengbenZhuanzhangType},</if>
+            <if test="chengbenZhuanzhangJine != null">chengben_zhuanzhang_jinE = #{chengbenZhuanzhangJine},</if>
+            <if test="chengbenZhuanzhangName != null">chengben_zhuanzhang_name = #{chengbenZhuanzhangName},</if>
+            <if test="chengbenZhuanzhangIsshoudaozhuanpiao != null">chengben_zhuanzhang_isShouDaoZhuanPiao = #{chengbenZhuanzhangIsshoudaozhuanpiao},</if>
+            <if test="chengbenZhuanzhangIsyizhuanzhang != null">chengben_zhuanzhang_isYiZhuanZhang = #{chengbenZhuanzhangIsyizhuanzhang},</if>
+            <if test="chengbenZhuanzhangRiqi != null">chengben_zhuanzhang_riQi = #{chengbenZhuanzhangRiqi},</if>
+            <if test="chengbenZhuanzhangNote != null">chengben_zhuanzhang_note = #{chengbenZhuanzhangNote},</if>
+            <if test="createuser != null">createuser = #{createuser},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="modifyuser != null">modifyuser = #{modifyuser},</if>
+            <if test="modifytime != null">modifytime = #{modifytime},</if>
+            <if test="isDel != null">isDel = #{isDel},</if>
+        </trim>
+        where chengben_zhuanzhang_id = #{chengbenZhuanzhangId}
+    </update>
+
+    <delete id="deleteZhuanZhangById" parameterType="String">
+        delete from pms_chengben_zhuanzhang where chengben_zhuanzhang_id = #{chengbenZhuanzhangId}
+    </delete>
+
+    <delete id="deleteZhuanZhangByIds" parameterType="String">
+        delete from pms_chengben_zhuanzhang where chengben_zhuanzhang_id in 
+        <foreach item="chengbenZhuanzhangId" collection="array" open="(" separator="," close=")">
+            #{chengbenZhuanzhangId}
+        </foreach>
+    </delete>
+
+</mapper>

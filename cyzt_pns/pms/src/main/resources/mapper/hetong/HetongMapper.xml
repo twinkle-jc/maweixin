@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pms.hetong.mapper.HetongMapper">
+    
+    <resultMap type="Hetong" id="HetongResult">
+        <result property="hetongId"    column="hetong_id"    />
+        <result property="hetongCode"    column="hetong_code"    />
+        <result property="hetongName"    column="hetong_name"    />
+        <result property="hetongType"    column="hetong_type"    />
+        <result property="hetongQiandingriqi"    column="hetong_qianDingRiQi"    />
+        <result property="hetongKaishiriqi"    column="hetong_kaiShiRiQi"    />
+        <result property="hetongJieshuriqi"    column="hetong_jieShuRiQi"    />
+        <result property="hetongZongjine"    column="hetong_zongJinE"    />
+        <result property="hetongZhuangtai"    column="hetong_zhuangTai"    />
+        <result property="hetongNote"    column="hetong_note"    />
+        <result property="createuser"    column="createuser"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="modifyuser"    column="modifyuser"    />
+        <result property="modifytime"    column="modifytime"    />
+        <result property="isDel"    column="isDel"    />
+    </resultMap>
+
+    <sql id="selectHetongVo">
+        select hetong_id, hetong_code, hetong_name, hetong_type, hetong_qianDingRiQi, hetong_kaiShiRiQi, hetong_jieShuRiQi, hetong_zongJinE, hetong_zhuangTai, hetong_note, createuser, createtime, modifyuser, modifytime, isDel from pms_hetong
+    </sql>
+
+    <select id="selectHetongList" parameterType="Hetong" resultMap="HetongResult">
+        <include refid="selectHetongVo"/>
+        <where>  
+            <if test="hetongCode != null  and hetongCode != ''"> and hetong_code = #{hetongCode}</if>
+            <if test="hetongName != null  and hetongName != ''"> and hetong_name like concat('%', #{hetongName}, '%')</if>
+            <if test="hetongType != null  and hetongType != ''"> and hetong_type = #{hetongType}</if>
+            <if test="hetongQiandingriqi != null "> and hetong_qianDingRiQi = #{hetongQiandingriqi}</if>
+            <if test="hetongKaishiriqi != null "> and hetong_kaiShiRiQi = #{hetongKaishiriqi}</if>
+            <if test="hetongJieshuriqi != null "> and hetong_jieShuRiQi = #{hetongJieshuriqi}</if>
+            <if test="hetongZongjine != null "> and hetong_zongJinE = #{hetongZongjine}</if>
+            <if test="hetongZhuangtai != null  and hetongZhuangtai != ''"> and hetong_zhuangTai = #{hetongZhuangtai}</if>
+            <if test="hetongNote != null  and hetongNote != ''"> and hetong_note = #{hetongNote}</if>
+            <if test="createuser != null "> and createuser = #{createuser}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="modifyuser != null "> and modifyuser = #{modifyuser}</if>
+            <if test="modifytime != null "> and modifytime = #{modifytime}</if>
+            <if test="isDel != null "> and isDel = #{isDel}</if>
+        </where>
+    </select>
+    
+    <select id="selectHetongById" parameterType="String" resultMap="HetongResult">
+        <include refid="selectHetongVo"/>
+        where hetong_id = #{hetongId}
+    </select>
+        
+    <insert id="insertHetong" parameterType="Hetong">
+        insert into pms_hetong
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hetongId != null">hetong_id,</if>
+            <if test="hetongCode != null">hetong_code,</if>
+            <if test="hetongName != null">hetong_name,</if>
+            <if test="hetongType != null">hetong_type,</if>
+            <if test="hetongQiandingriqi != null">hetong_qianDingRiQi,</if>
+            <if test="hetongKaishiriqi != null">hetong_kaiShiRiQi,</if>
+            <if test="hetongJieshuriqi != null">hetong_jieShuRiQi,</if>
+            <if test="hetongZongjine != null">hetong_zongJinE,</if>
+            <if test="hetongZhuangtai != null">hetong_zhuangTai,</if>
+            <if test="hetongNote != null">hetong_note,</if>
+            <if test="createuser != null">createuser,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="modifyuser != null">modifyuser,</if>
+            <if test="modifytime != null">modifytime,</if>
+            <if test="isDel != null">isDel,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hetongId != null">#{hetongId},</if>
+            <if test="hetongCode != null">#{hetongCode},</if>
+            <if test="hetongName != null">#{hetongName},</if>
+            <if test="hetongType != null">#{hetongType},</if>
+            <if test="hetongQiandingriqi != null">#{hetongQiandingriqi},</if>
+            <if test="hetongKaishiriqi != null">#{hetongKaishiriqi},</if>
+            <if test="hetongJieshuriqi != null">#{hetongJieshuriqi},</if>
+            <if test="hetongZongjine != null">#{hetongZongjine},</if>
+            <if test="hetongZhuangtai != null">#{hetongZhuangtai},</if>
+            <if test="hetongNote != null">#{hetongNote},</if>
+            <if test="createuser != null">#{createuser},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifyuser != null">#{modifyuser},</if>
+            <if test="modifytime != null">#{modifytime},</if>
+            <if test="isDel != null">#{isDel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHetong" parameterType="Hetong">
+        update pms_hetong
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hetongCode != null">hetong_code = #{hetongCode},</if>
+            <if test="hetongName != null">hetong_name = #{hetongName},</if>
+            <if test="hetongType != null">hetong_type = #{hetongType},</if>
+            <if test="hetongQiandingriqi != null">hetong_qianDingRiQi = #{hetongQiandingriqi},</if>
+            <if test="hetongKaishiriqi != null">hetong_kaiShiRiQi = #{hetongKaishiriqi},</if>
+            <if test="hetongJieshuriqi != null">hetong_jieShuRiQi = #{hetongJieshuriqi},</if>
+            <if test="hetongZongjine != null">hetong_zongJinE = #{hetongZongjine},</if>
+            <if test="hetongZhuangtai != null">hetong_zhuangTai = #{hetongZhuangtai},</if>
+            <if test="hetongNote != null">hetong_note = #{hetongNote},</if>
+            <if test="createuser != null">createuser = #{createuser},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="modifyuser != null">modifyuser = #{modifyuser},</if>
+            <if test="modifytime != null">modifytime = #{modifytime},</if>
+            <if test="isDel != null">isDel = #{isDel},</if>
+        </trim>
+        where hetong_id = #{hetongId}
+    </update>
+
+    <delete id="deleteHetongById" parameterType="String">
+        delete from pms_hetong where hetong_id = #{hetongId}
+    </delete>
+
+    <delete id="deleteHetongByIds" parameterType="String">
+        delete from pms_hetong where hetong_id in 
+        <foreach item="hetongId" collection="array" open="(" separator="," close=")">
+            #{hetongId}
+        </foreach>
+    </delete>
+
+</mapper>

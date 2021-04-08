@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('报表统计')" />
+</head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <div style="padding: 50px 20px">
+<!--                            <div class="col-md-1">-->
+<!--                                <li>-->
+<!--                                </li>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-1">-->
+<!--                                <li>-->
+<!--                                </li>-->
+<!--                            </div>-->
+                                <div class="col-md-1">
+                                    <li>
+                                        <h4>项目</h4>
+                                        <h1>*{}</h1>
+                                    </li>
+                                </div>
+                                <div class="col-md-1">
+                                    <li>
+                                        <h4>总任务</h4>
+                                        <h1>67</h1>
+                                    </li>
+                                </div>
+                                <div class="col-md-1">
+                                    <li>
+                                        <h4>未开始</h4>
+                                        <h1>52</h1>
+                                    </li>
+                                </div>
+                                <div class="col-md-1">
+                                    <li>
+                                        <h4>进行中</h4>
+                                        <h1>13</h1>
+                                    </li>
+                                </div>
+                                <div class="col-md-1">
+                                    <li>
+                                        <h4>已完成</h4>
+                                        <h1>2</h1>
+                                    </li>
+                                </div>
+
+                            <div class="col-sm-4">
+                               <div class="echarts" id="finish-rate"></div>
+                            </div>
+                            </div>
+                            <!--<div class="col-md-1">
+                                <li>
+                                    <h4>完成率</h4>
+                                    <div>
+                                        <div class="col-sm-6">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-content">
+                                                    <div class="echarts" id="finish-rate1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </div>-->
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <th:block th:include="include :: echarts-js" />
+    <th:block th:include="include :: bootstrap-table-export-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "demo/table";
+        var datas = [[${@dict.getType('sys_normal_disable')}]];
+
+        $(function () {
+                var options = {
+                    url: prefix + "/list",
+                    modalName: "报表",
+                    columns: [{
+                        field : 'userId',
+                        title : '项目'
+                    },
+                    {
+                        field : 'userCode',
+                        title : '总任务',
+                    },
+                    {
+                        field : 'userName',
+                        title : '未开始'
+                    },
+                    {
+                        field : 'userPhone',
+                        title : '进行中'
+                    },
+                    {
+                        field : 'userEmail',
+                        title : '已完成'
+                    },
+                    {
+                        field : 'userBalance',
+                        title : '完成率',
+                        formatter: function(value, row, index) {
+                            var pre = value/50;
+                            return  " <div class='progress progress-mini'>"+
+                                                "<div style='width: "+pre+"%;' class='progress-bar'></div>"+
+                                "</div>" ;
+                        }
+                    },
+                    {
+                        field: 'status',
+                        title: '项目状态',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            return $.table.selectDictLabel(datas, value);
+                        }
+                    }]
+                };
+            $.table.init(options);
+            var gaugeChart = echarts.init(document.getElementById("finish-rate"));
+            var gaugeoption = {
+                tooltip : {
+                    formatter: "{a} <br/>{c} {b}"
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: false},
+                        restore : {show: false},
+                        saveAsImage : {show: false}
+                    }
+                },
+                series : [
+                    {
+                        name:'完成率',
+                        type:'gauge',
+                        center : ['45%', '50%'],    // 默认全局居中
+                        min:0,
+                        max:100,
+                        splitNumber:10,
+                        grid:{
+                            left: '5%',   // 与容器左侧的距离
+                            right: '5%', // 与容器右侧的距离
+                            top: '5%',   // 与容器顶部的距离
+                            bottom: '5%', // 与容器底部的距离
+                        },
+                        axisLine: {            // 坐标轴线
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                width: 4
+                            }
+                        },
+                        axisTick: {            // 坐标轴小标记
+                            length :10,        // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        splitLine: {           // 分隔线
+                            length :10,         // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        title : {
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                // fontWeight: 'bolder',
+                                fontSize: 10,
+                                fontStyle: 'italic'
+                            }
+                        },
+                        detail : {
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                // fontWeight: 'bolder'
+                            }
+                        },
+                        data:[{value: 40, name: '完成率'}],
+                        title: {
+                            offsetCenter: [0, '80%']//设置完成率位置
+                        }
+                    }
+                ]
+            };
+            gaugeChart.setOption(gaugeoption);
+            $(window).resize(gaugeChart.resize);
+        });
+
+        $.post({
+            type:"Get",
+            url:"/xiangmu/sum",
+            success:function ()
+
+        })
+    </script>
+</body>
+</html>

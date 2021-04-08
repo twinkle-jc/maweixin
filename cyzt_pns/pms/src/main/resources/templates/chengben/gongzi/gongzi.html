@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('工资列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>类型：</label>
+                                <select name="chengbenGongziType" th:with="type=${@dict.getType('pms_chengben_gongzi_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>月份：</label>
+                                <input type="text" class="time-input" placeholder="请选择月份" name="chengbenGongziYuefen"/>
+                            </li>
+
+                            <li>
+                                <label>发薪人员：</label>
+                                <input type="text" name="chengbenGongziFaxinren"/>
+                            </li>
+
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="chengben:gongzi:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="chengben:gongzi:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="chengben:gongzi:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="chengben:gongzi:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('chengben:gongzi:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('chengben:gongzi:remove')}]];
+        var chengbenGongziTypeDatas = [[${@dict.getType('pms_chengben_gongzi_type')}]];
+        var prefix = ctx + "chengben/gongzi";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "工资",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'chengbenGongziId',
+                    title: '工资表主键',
+                    visible: false
+                },
+                {
+                    field: 'chengbenGongziType',
+                    title: '类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(chengbenGongziTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'chengbenGongziYuefen',
+                    title: '月份'
+                },
+                {
+                    field: 'chengbenGongziYingfa',
+                    title: '应发工资'
+                },
+                {
+                    field: 'chengbenGongziGerenshebao',
+                    title: '个人社保'
+                },
+                {
+                    field: 'chengbenGongziGeshui',
+                    title: '个税'
+                },
+                {
+                    field: 'chengbenGongziBufabujiao',
+                    title: '补发补缴'
+                },
+                {
+                    field: 'chengbenGongziShifa',
+                    title: '实发'
+                },
+                {
+                    field: 'chengbenGongziGongsishebao',
+                    title: '公司社保'
+                },
+                {
+                    field: 'chengbenGongziYonggongchengben',
+                    title: '用工成本'
+                },
+                {
+                    field: 'chengbenGongziNote',
+                    title: '备注'
+                },
+                {
+                    field: 'chengbenGongziFaxinren',
+                    title: '发薪人员'
+                },
+                {
+                    field: 'createuser',
+                    title: '创建用户',
+                    visible: false
+                },
+                {
+                    field: 'createtime',
+                    title: '创建时间',
+                    visible: false
+                },
+                {
+                    field: 'modifyuser',
+                    title: '最后修改用户',
+                    visible: false
+                },
+                {
+                    field: 'modifytime',
+                    title: '最后修改时间',
+                    visible: false
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.chengbenGongziId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.chengbenGongziId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

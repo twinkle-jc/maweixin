@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('税列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+
+                            <li>
+                                <label>类型：</label>
+                                <select name="chengbenShuiType">
+                                    <option value="">所有</option>
+                                    <option value="-1">代码生成请选择字典属性</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>金额：</label>
+                                <input type="text" name="chengbenShuiJine"/>
+                            </li>
+                            <li>
+                                <label>日期：</label>
+                                <input type="text" class="time-input" placeholder="请选择日期" name="chengbenShuiRiqi"/>
+                            </li>
+
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="chengben:Tax:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="chengben:Tax:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="chengben:Tax:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="chengben:Tax:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('chengben:Tax:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('chengben:Tax:remove')}]];
+        var prefix = ctx + "chengben/Tax";
+        var chengbenShuiTypeDatas = [[${@dict.getType('pms_chengben_shui_type')}]];
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "税",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'chengbenShuiId',
+                    title: '税务表主键',
+                    visible: false
+                },
+                {
+                    field: 'chengbenShuiType',
+                    title: '类型',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(chengbenShuiTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'chengbenShuiJine',
+                    title: '金额'
+                },
+                {
+                    field: 'chengbenShuiRiqi',
+                    title: '日期'
+                },
+                {
+                    field: 'chengbenShuiNote',
+                    title: '备注'
+                },
+                {
+                    field: 'createuser',
+                    title: '创建用户',
+                    visible: false
+                },
+                {
+                    field: 'createtime',
+                    title: '创建时间',
+                    visible: false
+                },
+                {
+                    field: 'modifyuser',
+                    title: '最后修改用户',
+                    visible: false
+                },
+                {
+                    field: 'modifytime',
+                    title: '最后修改时间',
+                    visible: false
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.chengbenShuiId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.chengbenShuiId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

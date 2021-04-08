@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pms.report.mapper.ReportMapper">
+
+    <select id="countXiangmu" resultType="int">
+        select count(xiangmu_id) from pms_xiangmu
+    </select>
+
+    <select id="countRenwu" resultType="int">
+        select count(xiangmu_renwu_id) from `pms_xiangmu_renwu`
+    </select>
+
+    <select id="countFenzuRenwu" resultType="int">
+        select xiangmu_renwu_fenzu_id,count(xiangmu_renwu_id) from `pms_xiangmu_renwu` group by xiangmu_renwu_fenzu_id
+    </select>
+
+</mapper>

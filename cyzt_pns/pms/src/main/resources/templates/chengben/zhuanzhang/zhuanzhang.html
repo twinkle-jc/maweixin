@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('转账列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>类型：</label>
+                                <select name="chengbenZhuanzhangType">
+                                    <option value="">所有</option>
+                                    <option value="-1">代码生成请选择字典属性</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>金额：</label>
+                                <input type="text" name="chengbenZhuanzhangJine"/>
+                            </li>
+                            <li>
+                                <label>名称：</label>
+                                <input type="text" name="chengbenZhuanzhangName"/>
+                            </li>
+                            <li>
+                                <label>是否收到专票：</label>
+                                <input type="text" name="chengbenZhuanzhangIsshoudaozhuanpiao"/>
+                            </li>
+                            <li>
+                                <label>是否已转账：</label>
+                                <input type="text" name="chengbenZhuanzhangIsyizhuanzhang"/>
+                            </li>
+                            <li>
+                                <label>日期：</label>
+                                <input type="text" class="time-input" placeholder="请选择日期" name="chengbenZhuanzhangRiqi"/>
+                            </li>
+                            <li>
+                                <label>创建用户：</label>
+                                <input type="text" name="createuser"/>
+                            </li>
+                            <li>
+                                <label>创建时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择创建时间" name="createtime"/>
+                            </li>
+                            <li>
+                                <label>最后修改用户：</label>
+                                <input type="text" name="modifyuser"/>
+                            </li>
+                            <li>
+                                <label>最后修改时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择最后修改时间" name="modifytime"/>
+                            </li>
+                            <li>
+                                <label>是否删除：</label>
+                                <input type="text" name="isDel"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="chengben:zhuanzhang:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="chengben:zhuanzhang:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="chengben:zhuanzhang:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="chengben:zhuanzhang:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('chengben:zhuanzhang:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('chengben:zhuanzhang:remove')}]];
+        var prefix = ctx + "chengben/zhuanzhang";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "转账",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'chengbenZhuanzhangId',
+                    title: '转账表主键',
+                    visible: false
+                },
+                {
+                    field: 'chengbenZhuanzhangType',
+                    title: '类型'
+                },
+                {
+                    field: 'chengbenZhuanzhangJine',
+                    title: '金额'
+                },
+                {
+                    field: 'chengbenZhuanzhangName',
+                    title: '名称'
+                },
+                {
+                    field: 'chengbenZhuanzhangIsshoudaozhuanpiao',
+                    title: '是否收到专票'
+                },
+                {
+                    field: 'chengbenZhuanzhangIsyizhuanzhang',
+                    title: '是否已转账'
+                },
+                {
+                    field: 'chengbenZhuanzhangRiqi',
+                    title: '日期'
+                },
+                {
+                    field: 'chengbenZhuanzhangNote',
+                    title: '备注'
+                },
+                {
+                    field: 'createuser',
+                    title: '创建用户'
+                },
+                {
+                    field: 'createtime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'modifyuser',
+                    title: '最后修改用户'
+                },
+                {
+                    field: 'modifytime',
+                    title: '最后修改时间'
+                },
+                {
+                    field: 'isDel',
+                    title: '是否删除'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.chengbenZhuanzhangId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.chengbenZhuanzhangId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

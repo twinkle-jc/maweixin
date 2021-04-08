@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pms.chengben.mapper.GongziMapper">
+    
+    <resultMap type="Gongzi" id="GongziResult">
+        <result property="chengbenGongziId"    column="chengben_gongzi_id"    />
+        <result property="chengbenGongziType"    column="chengben_gongzi_type"    />
+        <result property="chengbenGongziYuefen"    column="chengben_gongzi_yueFen"    />
+        <result property="chengbenGongziYingfa"    column="chengben_gongzi_yingFa"    />
+        <result property="chengbenGongziGerenshebao"    column="chengben_gongzi_geRenSheBao"    />
+        <result property="chengbenGongziGeshui"    column="chengben_gongzi_geShui"    />
+        <result property="chengbenGongziBufabujiao"    column="chengben_gongzi_buFaBuJiao"    />
+        <result property="chengbenGongziShifa"    column="chengben_gongzi_shiFa"    />
+        <result property="chengbenGongziGongsishebao"    column="chengben_gongzi_gongSiSheBao"    />
+        <result property="chengbenGongziYonggongchengben"    column="chengben_gongzi_yongGongChengBen"    />
+        <result property="chengbenGongziNote"    column="chengben_gongzi_note"    />
+        <result property="chengbenGongziFaxinren"    column="chengben_gongzi_faXinRen"    />
+        <result property="createuser"    column="createuser"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="modifyuser"    column="modifyuser"    />
+        <result property="modifytime"    column="modifytime"    />
+        <result property="isDel"    column="isDel"    />
+    </resultMap>
+
+    <sql id="selectGongziVo">
+        select chengben_gongzi_id, chengben_gongzi_type, chengben_gongzi_yueFen, chengben_gongzi_yingFa, chengben_gongzi_geRenSheBao, chengben_gongzi_geShui, chengben_gongzi_buFaBuJiao, chengben_gongzi_shiFa, chengben_gongzi_gongSiSheBao, chengben_gongzi_yongGongChengBen, chengben_gongzi_note, chengben_gongzi_faXinRen, createuser, createtime, modifyuser, modifytime, isDel from pms_chengben_gongzi
+    </sql>
+
+    <select id="selectGongziList" parameterType="Gongzi" resultMap="GongziResult">
+        <include refid="selectGongziVo"/>
+        <where>  
+            <if test="chengbenGongziType != null  and chengbenGongziType != ''"> and chengben_gongzi_type = #{chengbenGongziType}</if>
+            <if test="chengbenGongziYuefen != null "> and chengben_gongzi_yueFen = #{chengbenGongziYuefen}</if>
+            <if test="chengbenGongziYingfa != null "> and chengben_gongzi_yingFa = #{chengbenGongziYingfa}</if>
+            <if test="chengbenGongziGerenshebao != null "> and chengben_gongzi_geRenSheBao = #{chengbenGongziGerenshebao}</if>
+            <if test="chengbenGongziGeshui != null "> and chengben_gongzi_geShui = #{chengbenGongziGeshui}</if>
+            <if test="chengbenGongziBufabujiao != null "> and chengben_gongzi_buFaBuJiao = #{chengbenGongziBufabujiao}</if>
+            <if test="chengbenGongziShifa != null "> and chengben_gongzi_shiFa = #{chengbenGongziShifa}</if>
+            <if test="chengbenGongziGongsishebao != null "> and chengben_gongzi_gongSiSheBao = #{chengbenGongziGongsishebao}</if>
+            <if test="chengbenGongziYonggongchengben != null "> and chengben_gongzi_yongGongChengBen = #{chengbenGongziYonggongchengben}</if>
+            <if test="chengbenGongziNote != null  and chengbenGongziNote != ''"> and chengben_gongzi_note = #{chengbenGongziNote}</if>
+            <if test="chengbenGongziFaxinren != null "> and chengben_gongzi_faXinRen = #{chengbenGongziFaxinren}</if>
+            <if test="createuser != null "> and createuser = #{createuser}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="modifyuser != null "> and modifyuser = #{modifyuser}</if>
+            <if test="modifytime != null "> and modifytime = #{modifytime}</if>
+            <if test="isDel != null "> and isDel = #{isDel}</if>
+        </where>
+    </select>
+    
+    <select id="selectGongziById" parameterType="String" resultMap="GongziResult">
+        <include refid="selectGongziVo"/>
+        where chengben_gongzi_id = #{chengbenGongziId}
+    </select>
+        
+    <insert id="insertGongzi" parameterType="Gongzi">
+        insert into pms_chengben_gongzi
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="chengbenGongziId != null">chengben_gongzi_id,</if>
+            <if test="chengbenGongziType != null">chengben_gongzi_type,</if>
+            <if test="chengbenGongziYuefen != null">chengben_gongzi_yueFen,</if>
+            <if test="chengbenGongziYingfa != null">chengben_gongzi_yingFa,</if>
+            <if test="chengbenGongziGerenshebao != null">chengben_gongzi_geRenSheBao,</if>
+            <if test="chengbenGongziGeshui != null">chengben_gongzi_geShui,</if>
+            <if test="chengbenGongziBufabujiao != null">chengben_gongzi_buFaBuJiao,</if>
+            <if test="chengbenGongziShifa != null">chengben_gongzi_shiFa,</if>
+            <if test="chengbenGongziGongsishebao != null">chengben_gongzi_gongSiSheBao,</if>
+            <if test="chengbenGongziYonggongchengben != null">chengben_gongzi_yongGongChengBen,</if>
+            <if test="chengbenGongziNote != null">chengben_gongzi_note,</if>
+            <if test="chengbenGongziFaxinren != null">chengben_gongzi_faXinRen,</if>
+            <if test="createuser != null">createuser,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="modifyuser != null">modifyuser,</if>
+            <if test="modifytime != null">modifytime,</if>
+            <if test="isDel != null">isDel,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="chengbenGongziId != null">#{chengbenGongziId},</if>
+            <if test="chengbenGongziType != null">#{chengbenGongziType},</if>
+            <if test="chengbenGongziYuefen != null">#{chengbenGongziYuefen},</if>
+            <if test="chengbenGongziYingfa != null">#{chengbenGongziYingfa},</if>
+            <if test="chengbenGongziGerenshebao != null">#{chengbenGongziGerenshebao},</if>
+            <if test="chengbenGongziGeshui != null">#{chengbenGongziGeshui},</if>
+            <if test="chengbenGongziBufabujiao != null">#{chengbenGongziBufabujiao},</if>
+            <if test="chengbenGongziShifa != null">#{chengbenGongziShifa},</if>
+            <if test="chengbenGongziGongsishebao != null">#{chengbenGongziGongsishebao},</if>
+            <if test="chengbenGongziYonggongchengben != null">#{chengbenGongziYonggongchengben},</if>
+            <if test="chengbenGongziNote != null">#{chengbenGongziNote},</if>
+            <if test="chengbenGongziFaxinren != null">#{chengbenGongziFaxinren},</if>
+            <if test="createuser != null">#{createuser},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifyuser != null">#{modifyuser},</if>
+            <if test="modifytime != null">#{modifytime},</if>
+            <if test="isDel != null">#{isDel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGongzi" parameterType="Gongzi">
+        update pms_chengben_gongzi
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="chengbenGongziType != null">chengben_gongzi_type = #{chengbenGongziType},</if>
+            <if test="chengbenGongziYuefen != null">chengben_gongzi_yueFen = #{chengbenGongziYuefen},</if>
+            <if test="chengbenGongziYingfa != null">chengben_gongzi_yingFa = #{chengbenGongziYingfa},</if>
+            <if test="chengbenGongziGerenshebao != null">chengben_gongzi_geRenSheBao = #{chengbenGongziGerenshebao},</if>
+            <if test="chengbenGongziGeshui != null">chengben_gongzi_geShui = #{chengbenGongziGeshui},</if>
+            <if test="chengbenGongziBufabujiao != null">chengben_gongzi_buFaBuJiao = #{chengbenGongziBufabujiao},</if>
+            <if test="chengbenGongziShifa != null">chengben_gongzi_shiFa = #{chengbenGongziShifa},</if>
+            <if test="chengbenGongziGongsishebao != null">chengben_gongzi_gongSiSheBao = #{chengbenGongziGongsishebao},</if>
+            <if test="chengbenGongziYonggongchengben != null">chengben_gongzi_yongGongChengBen = #{chengbenGongziYonggongchengben},</if>
+            <if test="chengbenGongziNote != null">chengben_gongzi_note = #{chengbenGongziNote},</if>
+            <if test="chengbenGongziFaxinren != null">chengben_gongzi_faXinRen = #{chengbenGongziFaxinren},</if>
+            <if test="createuser != null">createuser = #{createuser},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="modifyuser != null">modifyuser = #{modifyuser},</if>
+            <if test="modifytime != null">modifytime = #{modifytime},</if>
+            <if test="isDel != null">isDel = #{isDel},</if>
+        </trim>
+        where chengben_gongzi_id = #{chengbenGongziId}
+    </update>
+
+    <delete id="deleteGongziById" parameterType="String">
+        delete from pms_chengben_gongzi where chengben_gongzi_id = #{chengbenGongziId}
+    </delete>
+
+    <delete id="deleteGongziByIds" parameterType="String">
+        delete from pms_chengben_gongzi where chengben_gongzi_id in 
+        <foreach item="chengbenGongziId" collection="array" open="(" separator="," close=")">
+            #{chengbenGongziId}
+        </foreach>
+    </delete>
+
+</mapper>
